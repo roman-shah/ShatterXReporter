@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shatter Tool - SHATTER REPORTER</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 30px 20px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #ff0040;
+            text-shadow: 0 0 20px #ff0040;
+            letter-spacing: 2px;
+        }
+        .sub {
+            color: #888;
+            font-size: 1em;
+            letter-spacing: 2px;
+            margin-top: -10px;
+        }
+        .box {
+            background: #1a1a1a;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 25px 20px;
+            border-radius: 12px;
+            border: 1px solid #ff004033;
+            box-shadow: 0 0 30px #ff004022;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1em;
+        }
+        input:focus {
+            border-color: #ff0040;
+            outline: none;
+        }
+        .channel-btn {
+            display: inline-block;
+            width: 90%;
+            padding: 14px 10px;
+            margin: 6px 0;
+            background: #1a1a1a;
+            color: #fff;
+            border: 2px solid #555;
+            border-radius: 40px;
+            font-size: 1em;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .channel-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px #ff004044;
+        }
+        .channel-btn.tech {
+            border-color: #00aaff;
+        }
+        .channel-btn.tech:hover {
+            background: #00aaff22;
+        }
+        .channel-btn.evil {
+            border-color: #ff00aa;
+        }
+        .channel-btn.evil:hover {
+            background: #ff00aa22;
+        }
+        .channel-btn.flex {
+            border-color: #ff4444;
+        }
+        .channel-btn.flex:hover {
+            background: #ff444422;
+        }
+        .btn {
+            padding: 12px 30px;
+            background: #ff0040;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 40px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 8px 4px;
+        }
+        .btn:hover {
+            box-shadow: 0 0 30px #ff004066;
+            transform: scale(1.02);
+        }
+        .btn-verify {
+            background: #00cc44;
+            color: #0a0a0a;
+        }
+        .btn-verify:hover {
+            box-shadow: 0 0 30px #00cc4466;
+        }
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .radio-group label {
+            background: #0a0a0a;
+            padding: 8px 14px;
+            border: 1px solid #333;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+        .radio-group input[type="radio"]:checked + label {
+            border-color: #ff0040;
+            background: #ff004022;
+            box-shadow: 0 0 15px #ff004044;
+        }
+        footer {
+            margin-top: 40px;
+            color: #444;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+        #timer {
+            font-size: 1.5em;
+            color: #ff0040;
+            margin: 10px 0;
+        }
+        .status-msg {
+            color: #0f0;
+            font-weight: bold;
+        }
+        .error-msg {
+            color: #ff0040;
+        }
+        #verify-status {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>SHATTER REPORTER</h1>
+    <p class="sub">Breaking The Limits</p>
+
+    <div class="box">
+        <h2 style="color:#fff; font-size:1.2em;">Enter Victim Username to shatter him</h2>
+        <input type="text" id="victim" placeholder="Username (e.g. @cheater)">
+        <br><br>
+
+        <h3 style="color:#ccc; font-size:1em;">🔗 Join our Channels & Group:</h3>
+        
+        <!-- Button 1: Tech Zone -->
+        <a href="https://whatsapp.com/channel/0029VbC4bG69hXF2s4nkQm1q" target="_blank" class="channel-btn tech">
+            👽 Join Shatter X Lover Tech Zone
+        </a>
+        
+        <!-- Button 2: Evil Shatter x Her Lover -->
+        <a href="https://whatsapp.com/channel/0029Vb7vU5r2kNFsQITrB224" target="_blank" class="channel-btn evil">
+            🍂 Join Evil Shatter ✘ Her Lover
+        </a>
+        
+        <!-- Button 3: Group -->
+        <a href="https://chat.whatsapp.com/KjuXTSxjccQHcb4ZtEGEZ0" target="_blank" class="channel-btn flex">
+            ☠️ Join Evil Shatter Flex (Group)
+        </a>
+        
+        <br><br>
+        <button class="btn btn-verify" onclick="verifyChannels()">✅ I have joined, Verify</button>
+        <p id="verify-status"></p>
+    </div>
+
+    <div class="box">
+        <h3 style="color:#ccc; font-size:1em;">📊 Select Report Amount (Max 1000/day):</h3>
+        <div class="radio-group">
+            <input type="radio" name="amount" value="100" id="r100"><label for="r100">100x</label>
+            <input type="radio" name="amount" value="200" id="r200"><label for="r200">200x</label>
+            <input type="radio" name="amount" value="500" id="r500"><label for="r500">500x</label>
+            <input type="radio" name="amount" value="1000" id="r1000"><label for="r1000">1000x</label>
+        </div>
+        <br>
+        <button class="btn" onclick="startShatter()">💥 Start Shatter</button>
+        <div id="timer">⏳ 00:00</div>
+        <div id="status-msg" class="status-msg"></div>
+    </div>
+
+    <footer>Owned by Evil Shatter 👑 & Developed by Her Lover 🍂</footer>
+
+    <script>
+        let isVerified = false;
+        let timerInterval = null;
+
+        function verifyChannels() {
+            fetch('/verify', { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.verified) {
+                        isVerified = true;
+                        document.getElementById('verify-status').innerHTML = '✅ Verified! Proceed to start.';
+                        document.getElementById('verify-status').style.color = '#0f0';
+                    } else {
+                        document.getElementById('verify-status').innerHTML = '❌ Verification failed. Try again.';
+                        document.getElementById('verify-status').style.color = '#ff0040';
+                    }
+                });
+        }
+
+        function startShatter() {
+            const username = document.getElementById('victim').value.trim();
+            const amountRadio = document.querySelector('input[name="amount"]:checked');
+            if (!username) { alert('Please enter victim username.'); return; }
+            if (!isVerified) { alert('Please join and verify channels first.'); return; }
+            if (!amountRadio) { alert('Please select report amount.'); return; }
+            const amount = parseInt(amountRadio.value);
+
+            const estimatedMinutes = Math.ceil((amount / 100) * 0.4);
+            const totalSeconds = estimatedMinutes * 60;
+            let remaining = totalSeconds;
+            const timerDisplay = document.getElementById('timer');
+            const statusMsg = document.getElementById('status-msg');
+
+            document.querySelector('.btn').disabled = true;
+            document.querySelector('.btn').innerHTML = '⏳ Shattering...';
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerDisplay.innerHTML = `⏳ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerHTML = '✅ Done!';
+                }
+                remaining--;
+            }, 1000);
+
+            fetch('/start_report', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    platform: '{{ platform }}',
+                    username: username,
+                    amount: amount
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.started) {
+                    statusMsg.innerHTML = '✅ Reporting started! Check status at /status';
+                    statusMsg.style.color = '#0f0';
+                    setTimeout(() => {
+                        fetch('/status')
+                            .then(r => r.json())
+                            .then(status => {
+                                if (!status.running && status.progress >= status.total) {
+                                    statusMsg.innerHTML = '✅ Target Shattered Successfully! 🎉';
+                                    timerDisplay.innerHTML = '🎯 Banned!';
+                                    document.querySelector('.btn').disabled = false;
+                                    document.querySelector('.btn').innerHTML = '💥 Start Shatter';
+                                }
+                            });
+                    }, totalSeconds * 1000 + 5000);
+                } else {
+                    statusMsg.innerHTML = '❌ ' + (data.error || 'Something went wrong');
+                    statusMsg.style.color = '#ff0040';
+                    document.querySelector('.btn').disabled = false;
+                    document.querySelector('.btn').innerHTML = '💥 Start Shatter';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
