@@ -14,18 +14,22 @@
         button:hover { box-shadow: 0 0 30px #ff004066; }
         .error { color: #ff0040; }
         footer { margin-top: 50px; color: #444; }
-        .captcha { color: #0f0; font-size: 1.2em; }
+        .captcha-box { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 10px 0; }
+        .captcha-box input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+        .captcha-box label { color: #ccc; font-size: 0.9em; cursor: pointer; }
     </style>
 </head>
 <body>
     <h1>SHATTER REPORTER</h1>
     <p class="sub">Breaking The Limits</p>
     <div class="box">
-        <form method="POST">
+        <form method="POST" onsubmit="return validateCaptcha()">
             <input type="text" name="username" placeholder="Username" required><br>
             <input type="password" name="password" placeholder="Password" required><br>
-            <p class="captcha">🤖 {{ captcha }}</p>
-            <input type="text" name="captcha" placeholder="Enter answer" required><br>
+            <div class="captcha-box">
+                <input type="checkbox" id="captcha" required>
+                <label for="captcha">I'm not a robot</label>
+            </div>
             <button type="submit">Login</button>
         </form>
         {% if error %}
@@ -33,5 +37,15 @@
         {% endif %}
     </div>
     <footer>Owned by Evil Shatter 👑 & Developed by Her Lover 🍂</footer>
+    <script>
+        function validateCaptcha() {
+            const checkbox = document.getElementById('captcha');
+            if (!checkbox.checked) {
+                alert('Please verify you are human by ticking the box.');
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
