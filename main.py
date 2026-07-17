@@ -11,7 +11,7 @@ app.secret_key = "shatterlover2026"
 
 # ---------- RATE LIMITING (Anti-Crash) ----------
 rate_limit = {}
-def limit_requests(limit=5, per=60):  # 5 requests per minute per IP
+def limit_requests(limit=5, per=60):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
@@ -21,7 +21,7 @@ def limit_requests(limit=5, per=60):  # 5 requests per minute per IP
                 rate_limit[ip] = []
             rate_limit[ip] = [t for t in rate_limit[ip] if now - t < per]
             if len(rate_limit[ip]) >= limit:
-                abort(429)  # Too Many Requests
+                abort(429)
             rate_limit[ip].append(now)
             return f(*args, **kwargs)
         return wrapper
@@ -41,7 +41,7 @@ CHANNELS = [
     "https://chat.whatsapp.com/KjuXTSxjccQHcb4ZtEGEZ0"
 ]
 
-# ---------- REAL PROXY POOL (rotating) ----------
+# ---------- PROXY ROTATION ----------
 PROXY_LIST = [
     "http://103.152.112.157:8080",
     "http://103.152.112.158:8080",
@@ -55,8 +55,7 @@ PROXY_LIST = [
 def get_proxy():
     return {"http": random.choice(PROXY_LIST), "https": random.choice(PROXY_LIST)} if PROXY_LIST else None
 
-# ---------- REAL REPORT ENDPOINTS (after research) ----------
-# These are actual internal endpoints used by platforms (updated as of 2026)
+# ---------- REAL REPORT ENDPOINTS (updated) ----------
 ENDPOINTS = {
     "tiktok": {
         "url": "https://www.tiktok.com/api/v1/report/",
@@ -80,7 +79,6 @@ def report_worker(platform, username, amount):
     report_status["progress"] = 0
     report_status["total"] = amount
 
-    # Validate username (basic alphanumeric + underscores)
     if not re.match(r'^[a-zA-Z0-9_.]{1,30}$', username):
         report_status["running"] = False
         return
@@ -107,18 +105,9 @@ def report_worker(platform, username, amount):
         except:
             pass
         report_status["progress"] += 1
-        time.sleep(random.uniform(1.5, 3.5))  # mimic human-like delay
+        time.sleep(random.uniform(1.5, 3.5))
 
     report_status["running"] = False
-
-# ---------- CAPTCHA (simple math) ----------
-captcha_store = {}
-def generate_captcha():
-    a = random.randint(1, 9)
-    b = random.randint(1, 9)
-    answer = a + b
-    captcha_store[answer] = time.time() + 120  # expires in 2 mins
-    return f"{a} + {b} = ?"
 
 # ---------- ROUTES ----------
 @app.route('/')
@@ -130,23 +119,11 @@ def login():
     if request.method == 'POST':
         u = request.form.get('username')
         p = request.form.get('password')
-        captcha_input = request.form.get('captcha')
-        # Verify CAPTCHA
-        try:
-            captcha_answer = int(captcha_input)
-            if captcha_answer not in captcha_store or time.time() > captcha_store[captcha_answer]:
-                return render_template('login.html', error="Invalid CAPTCHA or expired", captcha=generate_captcha())
-        except:
-            return render_template('login.html', error="Invalid CAPTCHA", captcha=generate_captcha())
-        # Check credentials
         if u in USERS and USERS[u] == p:
             session['user'] = u
             return redirect('/dashboard')
-        else:
-            return render_template('login.html', error="Invalid credentials", captcha=generate_captcha())
-    # GET request: show login with CAPTCHA
-    captcha_q = generate_captcha()
-    return render_template('login.html', captcha=captcha_q)
+        return render_template('login.html', error="Invalid credentials")
+    return render_template('login.html')
 
 @app.route('/dashboard')
 @limit_requests(limit=10, per=60)
@@ -177,10 +154,8 @@ def start_report():
     platform = data.get('platform')
     username = data.get('username')
     amount = int(data.get('amount', 100))
-    # Validate username
     if not re.match(r'^[a-zA-Z0-9_.]{1,30}$', username):
         return jsonify({"error": "Invalid username format"})
-    # Start thread
     threading.Thread(target=report_worker, args=(platform, username, amount)).start()
     return jsonify({"started": True})
 
